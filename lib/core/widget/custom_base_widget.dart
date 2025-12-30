@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../utils/ui_spacer.dart';
+import 'custom_app_text.dart';
+import '../../features/translations/bloc/language_bloc.dart';
+import '../../features/translations/bloc/language_state.dart';
 
 class CustomBaseWidget extends StatefulWidget {
   final bool useSafeArea;
@@ -27,6 +30,8 @@ class CustomBaseWidget extends StatefulWidget {
   final bool resizeToAvoidBottomInset;
   final Widget? drawer;
   final GlobalKey<ScaffoldState>? scaffoldKey;
+  final bool enablePullToRefresh;
+  final Future<void> Function()? onRefresh;
 
   const CustomBaseWidget({
     this.useSafeArea = false,
@@ -53,6 +58,8 @@ class CustomBaseWidget extends StatefulWidget {
     this.resizeToAvoidBottomInset = true,
     this.drawer,
     this.scaffoldKey,
+    this.enablePullToRefresh = false,
+    this.onRefresh,
     Key? key,
   }) : super(key: key);
 
@@ -65,72 +72,85 @@ class _CustomBaseWidgetState extends State<CustomBaseWidget> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    Widget scaffold = Scaffold(
-      key: widget.scaffoldKey,
-      resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-      backgroundColor: widget.backgroundColor ?? theme.scaffoldBackgroundColor,
-      extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
-      appBar: widget.showAppBar
-          ? (widget.appBar != null
-          ? PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: widget.appBar!,
-      )
-          : AppBar(
-        backgroundColor: widget.appBarColor ?? theme.appBarTheme.backgroundColor,
-        elevation: widget.elevation ?? theme.appBarTheme.elevation,
-        automaticallyImplyLeading: widget.showLeadingAction,
-        leading: widget.showLeadingAction
-            ? (widget.leading ??
-            IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: widget.appBarLeadingColor ??
-                    widget.appBarItemColor ??
-                    theme.appBarTheme.iconTheme?.color ??
-                    theme.colorScheme.onPrimary,
-              ),
-              onPressed: widget.onBackPressed != null
-                  ? () => widget.onBackPressed!()
-                  : () => Navigator.pop(context),
-            ))
-            : null,
-        title: Text(
-          widget.appBarTitle ?? "",
-          style: theme.appBarTheme.titleTextStyle?.copyWith(
-            color: widget.appBarTitleColor ??
-                widget.appBarItemColor ??
-                theme.appBarTheme.titleTextStyle?.color,
-          ) ??
-              theme.textTheme.titleLarge?.copyWith(
+    // BlocBuilder wrap kar diya taaki language changes detect ho sake
+    return BlocBuilder<LanguageBloc, LanguageState>(
+      builder: (context, languageState) {
+        Widget scaffold = Scaffold(
+          key: widget.scaffoldKey,
+          resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+          backgroundColor: widget.backgroundColor ?? theme.scaffoldBackgroundColor,
+          extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
+          appBar: widget.showAppBar
+              ? (widget.appBar != null
+              ? PreferredSize(
+            preferredSize: const Size.fromHeight(kToolbarHeight),
+            child: widget.appBar!,
+          )
+              : AppBar(
+            backgroundColor: widget.appBarColor ?? theme.appBarTheme.backgroundColor,
+            elevation: widget.elevation ?? theme.appBarTheme.elevation,
+            automaticallyImplyLeading: widget.showLeadingAction,
+            leading: widget.showLeadingAction
+                ? (widget.leading ??
+                IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: widget.appBarLeadingColor ??
+                        widget.appBarItemColor ??
+                        theme.appBarTheme.iconTheme?.color ??
+                        theme.colorScheme.onPrimary,
+                  ),
+                  onPressed: widget.onBackPressed != null
+                      ? () => widget.onBackPressed!()
+                      : () => Navigator.pop(context),
+                ))
+                : null,
+            title: CustomAppText(
+              widget.appBarTitle ?? "",
+              style: theme.appBarTheme.titleTextStyle?.copyWith(
                 color: widget.appBarTitleColor ??
                     widget.appBarItemColor ??
-                    theme.colorScheme.onPrimary,
+                    theme.appBarTheme.titleTextStyle?.color,
+              ) ??
+                  theme.textTheme.titleLarge?.copyWith(
+                    color: widget.appBarTitleColor ??
+                        widget.appBarItemColor ??
+                        theme.colorScheme.onPrimary,
+                  ),
+            ),
+            actions: widget.actions,
+          ))
+              : null,
+          body: Column(
+            children: [
+              widget.isLoading
+                  ? LinearProgressIndicator(
+                color: theme.colorScheme.primary,
+                backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
+              )
+                  : UiSpacer.emptySpace(),
+              Expanded(
+                child: widget.enablePullToRefresh && widget.onRefresh != null
+                    ? RefreshIndicator(
+                  onRefresh: widget.onRefresh!,
+                  color: theme.colorScheme.primary,
+                  backgroundColor: theme.colorScheme.surface,
+                  child: widget.body,
+                )
+                    : widget.body,
               ),
-        ),
-        actions: widget.actions,
-      ))
-          : null,
-      body: Column(
-        children: [
-          widget.isLoading
-              ? LinearProgressIndicator(
-            color: theme.colorScheme.primary,
-            backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
-          )
-              : UiSpacer.emptySpace(),
-          Expanded(child: widget.body),
-        ],
-      ),
-      bottomSheet: widget.bottomSheet,
-      floatingActionButton: widget.fab,
-      bottomNavigationBar: widget.bottomNavigationBar,
-      drawer: widget.drawer,
-    );
+            ],
+          ),
+          bottomSheet: widget.bottomSheet,
+          floatingActionButton: widget.fab,
+          bottomNavigationBar: widget.bottomNavigationBar,
+          drawer: widget.drawer,
+        );
 
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: widget.useSafeArea ? SafeArea(child: scaffold) : scaffold,
+        return widget.useSafeArea
+            ? SafeArea(child: scaffold)
+            : scaffold;
+      },
     );
   }
 }

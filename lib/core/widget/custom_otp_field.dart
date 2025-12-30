@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'custom_app_text.dart';
+
 class CustomOtpField extends StatefulWidget {
   final int length;
   final bool isOutlined;
@@ -210,7 +212,7 @@ class _CustomOtpFieldState extends State<CustomOtpField> {
             if (fieldState.hasError)
               Padding(
                 padding: const EdgeInsets.only(top: 4.0),
-                child: Text(
+                child: CustomAppText(
                   fieldState.errorText!,
                   style: TextStyle(
                     color: theme.colorScheme.error,

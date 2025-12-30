@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
-import '../utils/constants/dimensions.dart';
+
+import '../constants/dimensions.dart';
+import 'custom_app_text.dart';
 
 enum ButtonStyleType { filled, outlined, text, gradient }
 enum GradientButtonType { filled, outlined, text }
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isLoading;
   final Color? backgroundColor;
   final Color? textColor;
@@ -28,7 +29,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     required this.text,
-    required this.onPressed,
+     this.onPressed,
     this.isLoading = false,
     this.backgroundColor,
     this.textColor,
@@ -100,7 +101,7 @@ class CustomButton extends StatelessWidget {
               gradient: g,
             ),
             child: Center(
-              child: Text(
+              child: CustomAppText(
                 text,
                 style: textStyle ??
                     TextStyle(
@@ -121,7 +122,7 @@ class CustomButton extends StatelessWidget {
             child: Center(
               child: ShaderMask(
                 shaderCallback: (bounds) => g.createShader(bounds),
-                child: Text(
+                child: CustomAppText(
                   text,
                   style: textStyle ??
                       TextStyle(
@@ -138,7 +139,7 @@ class CustomButton extends StatelessWidget {
           return Center(
             child: ShaderMask(
               shaderCallback: (bounds) => g.createShader(bounds),
-              child: Text(
+              child: CustomAppText(
                 text,
                 style: textStyle ??
                     TextStyle(
@@ -162,7 +163,7 @@ class CustomButton extends StatelessWidget {
           SizedBox(width: Dimensions.width10),
         ],
         Flexible(
-          child: Text(
+          child: CustomAppText(
             text,
             style: textStyle ??
                 TextStyle(

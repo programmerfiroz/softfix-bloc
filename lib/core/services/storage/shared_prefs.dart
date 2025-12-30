@@ -73,4 +73,5 @@ class SharedPrefs {
   static Future<bool> clear() async {
     return await _prefs?.clear() ?? false;
   }
+
 }

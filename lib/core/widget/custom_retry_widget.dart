@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:softfix_user/core/services/translations/localization_extension.dart';
+import 'package:virtual_office/core/extension/localization_extension.dart';
 
-import '../utils/constants/dimensions.dart';
+import '../constants/dimensions.dart';
 import '../utils/ui_spacer.dart';
+import 'custom_app_text.dart';
 import 'custom_button.dart';
 
 class RetryWidget extends StatelessWidget {
@@ -46,7 +47,7 @@ class RetryWidget extends StatelessWidget {
                       : theme.colorScheme.error.withOpacity(0.8)),
             ),
             UiSpacer.verticalSpace(),
-            Text(
+            CustomAppText(
               message,
               textAlign: TextAlign.center,
               style:
@@ -64,7 +65,7 @@ class RetryWidget extends StatelessWidget {
                   ),
             ),
             UiSpacer.verticalSpace(),
-            CustomButton(text: retryText.tr(context), onPressed: onRetry),
+            CustomButton(text: retryText, onPressed: onRetry),
           ],
         ),
       ),

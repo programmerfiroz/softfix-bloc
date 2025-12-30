@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:softfix_user/core/services/translations/localization_extension.dart';
+import 'package:virtual_office/core/extension/localization_extension.dart';
 import '../../main.dart';
-import '../theme/app_colors.dart';
+import '../constants/app_colors.dart';
+import '../widget/custom_app_text.dart';
 
 class CustomSnackbar {
   static void _show({
@@ -36,8 +37,8 @@ class CustomSnackbar {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  title.trGlobal, // ✅ using global translation
+                CustomAppText(
+                  title,
                   style: TextStyle(
                     color: effectiveTextColor,
                     fontWeight: FontWeight.bold,
@@ -45,8 +46,8 @@ class CustomSnackbar {
                   ),
                 ),
                 const SizedBox(height: 2),
-                Text(
-                  message.trGlobal, // ✅ using global translation
+                CustomAppText(
+                  message,
                   style: TextStyle(color: effectiveTextColor, fontSize: 14),
                 ),
               ],
@@ -55,8 +56,8 @@ class CustomSnackbar {
           TextButton(
             onPressed: () =>
                 rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar(),
-            child: Text(
-              "DISMISS".trGlobal, // optional: translate this too
+            child: CustomAppText(
+              "DISMISS",
               style: TextStyle(
                 color: effectiveTextColor,
                 fontWeight: FontWeight.bold,
@@ -70,7 +71,7 @@ class CustomSnackbar {
     rootScaffoldMessengerKey.currentState?.showSnackBar(snackBar);
   }
 
-  static void showSuccess(String message, {String title = 'Success'}) {
+  static void showSuccess( {required String message,String title = 'Success'}) {
     _show(
       title: title,
       message: message,
@@ -79,7 +80,7 @@ class CustomSnackbar {
     );
   }
 
-  static void showError(String message, {String title = 'Error'}) {
+  static void showError({required String message,String title = 'Error'}) {
     _show(
       title: title,
       message: message,
@@ -88,7 +89,7 @@ class CustomSnackbar {
     );
   }
 
-  static void showInfo(String message, {String title = 'Info'}) {
+  static void showInfo({required String message,String title = 'Info'}) {
     _show(
       title: title,
       message: message,
@@ -97,7 +98,7 @@ class CustomSnackbar {
     );
   }
 
-  static void showWarning(String message, {String title = 'Warning'}) {
+  static void showWarning({required String message,String title = 'Warning'}) {
     _show(
       title: title,
       message: message,
@@ -109,11 +110,11 @@ class CustomSnackbar {
   static void showFavoriteStatus({
     required bool isFavorite,
   }) {
-    final title = 'Favorites'.trGlobal;
+    final title = 'Favorites';
 
     final message = !isFavorite
-        ? 'Added to favorites'.trGlobal
-        : 'Removed from favorites'.trGlobal;
+        ? 'Added to favorites'
+        : 'Removed from favorites';
 
     final Color backgroundColor = !isFavorite
         ? AppColors.successColor.withOpacity(0.9)

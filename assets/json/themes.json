@@ -1,0 +1,98 @@
+{
+  "res": "success",
+  "message": "found",
+  "data": [
+    {
+      "id": 1,
+      "name": "Default Dark Green",
+      "primary-color": "#1B2E28",
+      "secondary-color": "#2ECC71",
+      "dark-primary-color": "#0F1F1A",
+      "dark-secondary-color": "#27AE60",
+      "is-default": true
+    },
+
+
+    {
+      "id": 2,
+      "name": "Ocean Blue",
+      "primary-color": "#1E88E5",
+      "secondary-color": "#42A5F5",
+      "dark-primary-color": "#1976D2",
+      "dark-secondary-color": "#2196F3",
+      "is-default": false
+    },
+    {
+      "id": 3,
+      "name": "Sunset Orange",
+      "primary-color": "#FB8C00",
+      "secondary-color": "#FFA726",
+      "dark-primary-color": "#F57C00",
+      "dark-secondary-color": "#FF9800",
+      "is-default": false
+    },
+    {
+      "id": 4,
+      "name": "Royal Purple",
+      "primary-color": "#8E24AA",
+      "secondary-color": "#AB47BC",
+      "dark-primary-color": "#7B1FA2",
+      "dark-secondary-color": "#9C27B0",
+      "is-default": false
+    },
+    {
+      "id": 5,
+      "name": "Nature Green",
+      "primary-color": "#43A047",
+      "secondary-color": "#66BB6A",
+      "dark-primary-color": "#388E3C",
+      "dark-secondary-color": "#4CAF50",
+      "is-default": false
+    },
+    {
+      "id": 6,
+      "name": "Teal Fresh",
+      "primary-color": "#00897B",
+      "secondary-color": "#26A69A",
+      "dark-primary-color": "#00796B",
+      "dark-secondary-color": "#009688",
+      "is-default": false
+    },
+    {
+      "id": 7,
+      "name": "Indigo Night",
+      "primary-color": "#3949AB",
+      "secondary-color": "#5C6BC0",
+      "dark-primary-color": "#303F9F",
+      "dark-secondary-color": "#3F51B5",
+      "is-default": false
+    },
+    {
+      "id": 8,
+      "name": "Pink Rose",
+      "primary-color": "#D81B60",
+      "secondary-color": "#EC407A",
+      "dark-primary-color": "#C2185B",
+      "dark-secondary-color": "#E91E63",
+      "is-default": false
+    },
+    {
+      "id": 9,
+      "name": "Fiery Orange",
+      "primary-color": "#F4511E",
+      "secondary-color": "#FF6E40",
+      "dark-primary-color": "#E64A19",
+      "dark-secondary-color": "#FF5722",
+      "is-default": false
+    },
+    {
+      "id": 10,
+      "name": "Coffee Brown",
+      "primary-color": "#6D4C41",
+      "secondary-color": "#8D6E63",
+      "dark-primary-color": "#5D4037",
+      "dark-secondary-color": "#795548",
+      "is-default": false
+    }
+  ]
+}

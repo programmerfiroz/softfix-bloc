@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../utils/constants/dimensions.dart';
+import '../constants/dimensions.dart';
 import '../utils/ui_spacer.dart';
+import 'custom_app_text.dart';
 import 'custom_image_widget.dart';
 
 class NavItem {
@@ -101,7 +102,7 @@ class CustomBottomNavBar extends StatelessWidget {
               color: isSelected ? selectedIconColor : unselectedIconColor,
             ),
             UiSpacer.verticalSpace(space: 5),
-            Text(
+            CustomAppText(
               label,
               style: TextStyle(
                 color: isSelected ? selectedTextColor : unselectedTextColor,

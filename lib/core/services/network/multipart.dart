@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MultipartBody {
   String key;
-  XFile? file;
+  File? file;
 
-  MultipartBody(this.key, this.file);
+  MultipartBody({required this.key,required this.file});
 }
 
 class MultipartDocument {

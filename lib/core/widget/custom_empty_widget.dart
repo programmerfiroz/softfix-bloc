@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:softfix_user/core/services/translations/localization_extension.dart';
-import 'package:softfix_user/core/utils/ui_spacer.dart';
-import 'package:softfix_user/core/widget/custom_button.dart';
+
+import '../utils/ui_spacer.dart';
+import 'custom_app_text.dart';
+import 'custom_button.dart';
 
 class CustomEmptyWidget extends StatelessWidget {
   final IconData icon;
@@ -41,7 +42,7 @@ class CustomEmptyWidget extends StatelessWidget {
                     : Colors.grey[400]),
           ),
           SizedBox(height: spacing),
-          Text(
+          CustomAppText(
             message,
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyLarge?.copyWith(
@@ -58,7 +59,7 @@ class CustomEmptyWidget extends StatelessWidget {
               width: 100,
               height: 45,
               borderRadius: 50,
-              text: "Back".tr(context), onPressed: () {
+              text: "Back", onPressed: () {
             Navigator.pop(context);
           }),
         ],

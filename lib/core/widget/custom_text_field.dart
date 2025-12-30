@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:virtual_office/core/extension/localization_extension.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
+
+  /// Text
   final String hintText;
+  final String? labelText;
+
+  /// Localization
+  final bool translate; // default true
+  final bool useGlobalContext;
+
+  /// UI
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final TextInputType keyboardType;
-  final String? Function(String?)? validator;
   final int? maxLength;
   final bool obscureText;
   final Color? borderColor;
   final double borderRadius;
   final TextStyle? textStyle;
+
+  /// Validation
+  final String? Function(String?)? validator;
   final Function(String)? onChanged;
+  final bool enabled;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
+    this.labelText,
+    this.translate = true,
+    this.useGlobalContext = false,
     this.prefixIcon,
     this.suffixIcon,
     this.keyboardType = TextInputType.text,
@@ -25,10 +41,16 @@ class CustomTextField extends StatelessWidget {
     this.maxLength,
     this.obscureText = false,
     this.borderColor,
-    this.borderRadius = 12.0,
+    this.borderRadius = 12,
     this.textStyle,
     this.onChanged,
-  }) : super(key: key);
+    this.enabled = true, // ✅ ADD
+  });
+
+  String _tr(BuildContext context, String value) {
+    if (!translate) return value;
+    return useGlobalContext ? value.trGlobal : value.tr(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +61,31 @@ class CustomTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
+      enabled: enabled,
       style: textStyle ?? theme.textTheme.bodyLarge,
       obscureText: obscureText,
+      textCapitalization: TextCapitalization.none,
+      onChanged: (value) {
+        if (value.isEmpty) return;
+
+        final capitalized =
+            value[0].toUpperCase() + value.substring(1);
+
+        if (capitalized != value) {
+          controller.value = controller.value.copyWith(
+            text: capitalized,
+            selection: TextSelection.collapsed(offset: capitalized.length),
+          );
+        }
+
+        onChanged?.call(capitalized);
+      },
       maxLength: maxLength,
-      onChanged: onChanged,
+      // onChanged: onChanged,
+      validator: validator,
       decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: theme.inputDecorationTheme.hintStyle,
+        hintText: _tr(context, hintText),
+        labelText: labelText != null ? _tr(context, labelText!) : null,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         counterText: "",
@@ -83,7 +123,6 @@ class CustomTextField extends StatelessWidget {
         fillColor: theme.inputDecorationTheme.fillColor ??
             (isDark ? theme.cardColor : Colors.white),
       ),
-      validator: validator,
     );
   }
 }

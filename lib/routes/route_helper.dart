@@ -1,39 +1,74 @@
+// lib/routes/route_helper.dart
+
 import 'package:flutter/material.dart';
-import 'package:softfix_user/presentation/screens/favorites_screen.dart';
-import 'package:softfix_user/presentation/screens/user_detail_screen.dart';
-import '../data/models/user_model.dart';
-import '../presentation/screens/splash_screen.dart';
-import '../presentation/screens/user_list_screen.dart';
-import 'app_routes.dart';
+import '../features/auth/view/login_screen.dart';
+import '../features/auth/view/otp_screen.dart';
+import '../features/auth/view/profile_setup_screen.dart';
+import '../features/home/home.dart';
+import '../features/splash/splash_screen.dart';
 
 class RouteHelper {
-  static String getSplashRoute() => AppRoutes.splash;
+  // Route Names
+  static const String splash = '/splash';
+  static const String login = '/login';
+  static const String otp = '/otp';
+  static const String profileSetup = '/profile-setup';
+  static const String home = '/home';
 
-  static String getUserListRoute() => AppRoutes.userList;
+  // Route Getters
+  static String getSplashRoute() => splash;
+  static String getLoginRoute() => login;
+  static String getOtpRoute() => otp;
+  static String getProfileSetupRoute() => profileSetup;
+  static String getHomeRoute() => home;
 
-  static String getFavoriteRoute() => AppRoutes.favorite;
-
-  static String getUserDetailsRoute() => AppRoutes.userDetails;
-
+  // Route Generator
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case AppRoutes.splash:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case splash:
+        return MaterialPageRoute(
+          builder: (_) => const SplashScreen(),
+        );
 
-      case AppRoutes.userList:
-        return MaterialPageRoute(builder: (_) => const UserListScreen());
-      case AppRoutes.favorite:
-        return MaterialPageRoute(builder: (_) => const FavoritesScreen());
+      case login:
+        return MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
+        );
 
-      case AppRoutes.userDetails:
-        final user = settings.arguments as UserModel; // cast arguments
-        return MaterialPageRoute(builder: (_) => UserDetailScreen(user: user));
+      case otp:
+        final args = settings.arguments as Map<String, dynamic>?;
+        if (args != null && args['phoneNumber'] != null) {
+          return MaterialPageRoute(
+            builder: (_) => OtpScreen(
+              phoneNumber: args['phoneNumber'],
+            ),
+          );
+        }
+        return _errorRoute();
+
+      case profileSetup:
+        return MaterialPageRoute(
+          builder: (_) => const ProfileSetupScreen(),
+        );
+
+      case home:
+        return MaterialPageRoute(
+          builder: (_) => const HomeScreen(),
+        );
 
       default:
-        return MaterialPageRoute(
-          builder: (_) =>
-              const Scaffold(body: Center(child: Text('Route not found'))),
-        );
+        return _errorRoute();
     }
+  }
+
+  // Error Route
+  static Route<dynamic> _errorRoute() {
+    return MaterialPageRoute(
+      builder: (_) => const Scaffold(
+        body: Center(
+          child: Text('Route not found'),
+        ),
+      ),
+    );
   }
 }
